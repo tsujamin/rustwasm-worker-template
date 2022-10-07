@@ -1,22 +1,19 @@
-name = "{{project-name}}"
-type = "javascript"
+name = "{{ project-name }}-dev"
 workers_dev = true
-compatibility_date = "2022-01-20"
-
-[vars]
-WORKERS_RS_VERSION = "0.0.9"
+compatibility_date = "2022-08-04"
+main = "build/worker/shim.mjs"
 
 [build]
+command = "cargo install -q worker-build && worker-build"
+
+[env.production]
+name = "{{ project-name }}"
+# Uncomment these lines and substitute your domain name
+# workers_dev = false
+# route = "{{ project-name }}.yourdomain.com/*"
+
+[env.production.build]
 command = "cargo install -q worker-build && worker-build --release" # required
-
-[build.upload]
-dir = "build/worker"
-format = "modules"
-main = "./shim.mjs"
-
-[[build.upload.rules]]
-globs = ["**/*.wasm"]
-type = "CompiledWasm"
 
 # read more about configuring your Worker via wrangler.toml at:
 # https://developers.cloudflare.com/workers/cli-wrangler/configuration
